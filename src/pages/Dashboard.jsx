@@ -1,10 +1,12 @@
-// pages/Dashboard.jsx
+// Updated Dashboard.jsx with dark theme
 import React from 'react';
 import StatsCard from '../components/StatsCard';
 import ChartCard from '../components/ChartCard';
+import { useTheme } from '../context/Themecontext';
 
 const Dashboard = () => {
-  // Mock data - replace with actual API calls
+  const { isDark } = useTheme();
+
   const statsData = [
     {
       title: 'Current Occupancy',
@@ -69,11 +71,27 @@ const Dashboard = () => {
       {/* Header */}
       <div className="flex justify-between items-center">
         <div>
-          <h1 className="text-3xl font-bold text-gray-800">Hospital Operations Dashboard</h1>
-          <p className="text-gray-600">Real-time monitoring and AI-powered predictions</p>
+          <h1 className={`text-3xl font-bold transition-colors ${
+            isDark ? 'text-white' : 'text-gray-800'
+          }`}>
+            Hospital Operations Dashboard
+          </h1>
+          <p className={`transition-colors ${
+            isDark ? 'text-gray-400' : 'text-gray-600'
+          }`}>
+            Real-time monitoring and AI-powered predictions
+          </p>
         </div>
-        <div className="bg-orange-100 border border-orange-300 px-4 py-2 rounded-lg">
-          <span className="text-orange-700 font-semibold">🔄 Live Updates</span>
+        <div className={`px-4 py-2 rounded-lg border transition-colors ${
+          isDark
+            ? 'bg-orange-900 border-orange-700'
+            : 'bg-orange-100 border-orange-300'
+        }`}>
+          <span className={`font-semibold transition-colors ${
+            isDark ? 'text-orange-300' : 'text-orange-700'
+          }`}>
+            🔄 Live Updates
+          </span>
         </div>
       </div>
 
@@ -99,21 +117,43 @@ const Dashboard = () => {
         </div>
 
         {/* External Indicators */}
-        <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-          <h3 className="text-lg font-semibold text-gray-800 mb-4">External Indicators</h3>
+        <div className={`rounded-xl shadow-sm border p-6 transition-colors ${
+          isDark 
+            ? 'bg-gray-800 border-gray-700' 
+            : 'bg-white border-gray-200'
+        }`}>
+          <h3 className={`text-lg font-semibold mb-4 transition-colors ${
+            isDark ? 'text-white' : 'text-gray-800'
+          }`}>
+            External Indicators
+          </h3>
           <div className="space-y-3">
             {externalIndicators.map((indicator, index) => (
-              <div key={index} className="flex justify-between items-center p-3 bg-gray-50 rounded-lg">
-                <span className="text-gray-700">{indicator.name}</span>
-                <div className="flex items-center space-x-2">
-                  <span className={`px-2 py-1 rounded-full text-xs font-medium ${
-                    indicator.color === 'red' ? 'bg-red-100 text-red-700' :
-                    indicator.color === 'yellow' ? 'bg-yellow-100 text-yellow-700' :
-                    'bg-green-100 text-green-700'
+              <div key={index} className={`p-3 rounded-lg transition-colors ${
+                isDark ? 'bg-gray-700' : 'bg-gray-50'
+              }`}>
+                <div className="flex justify-between items-center">
+                  <span className={`transition-colors ${
+                    isDark ? 'text-gray-300' : 'text-gray-700'
                   }`}>
-                    {indicator.value}
+                    {indicator.name}
                   </span>
-                  <span className="text-sm text-gray-500">{indicator.level}</span>
+                  <div className="flex items-center space-x-2">
+                    <span className={`px-2 py-1 rounded-full text-xs font-medium ${
+                      indicator.color === 'red' 
+                        ? isDark ? 'bg-red-900 text-red-300' : 'bg-red-100 text-red-700' :
+                      indicator.color === 'yellow' 
+                        ? isDark ? 'bg-yellow-900 text-yellow-300' : 'bg-yellow-100 text-yellow-700' :
+                        isDark ? 'bg-green-900 text-green-300' : 'bg-green-100 text-green-700'
+                    }`}>
+                      {indicator.value}
+                    </span>
+                    <span className={`text-sm transition-colors ${
+                      isDark ? 'text-gray-500' : 'text-gray-500'
+                    }`}>
+                      {indicator.level}
+                    </span>
+                  </div>
                 </div>
               </div>
             ))}
@@ -122,20 +162,45 @@ const Dashboard = () => {
       </div>
 
       {/* Alerts Section */}
-      <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-        <h3 className="text-lg font-semibold text-gray-800 mb-4">Recent Alerts</h3>
+      <div className={`rounded-xl shadow-sm border p-6 transition-colors ${
+        isDark 
+          ? 'bg-gray-800 border-gray-700' 
+          : 'bg-white border-gray-200'
+      }`}>
+        <h3 className={`text-lg font-semibold mb-4 transition-colors ${
+          isDark ? 'text-white' : 'text-gray-800'
+        }`}>
+          Recent Alerts
+        </h3>
         <div className="space-y-3">
           {alerts.map(alert => (
-            <div key={alert.id} className={`p-4 rounded-lg border-l-4 ${
-              alert.type === 'warning' ? 'border-l-orange-500 bg-orange-50' :
-              'border-l-blue-500 bg-blue-50'
+            <div key={alert.id} className={`p-4 rounded-lg border-l-4 transition-colors ${
+              alert.type === 'warning' 
+                ? isDark 
+                  ? 'border-l-orange-600 bg-orange-900' 
+                  : 'border-l-orange-500 bg-orange-50'
+                : isDark
+                ? 'border-l-blue-600 bg-blue-900'
+                : 'border-l-blue-500 bg-blue-50'
             }`}>
               <div className="flex justify-between items-start">
                 <div>
-                  <h4 className="font-semibold text-gray-800">{alert.title}</h4>
-                  <p className="text-gray-600 text-sm mt-1">{alert.message}</p>
+                  <h4 className={`font-semibold transition-colors ${
+                    isDark ? 'text-white' : 'text-gray-800'
+                  }`}>
+                    {alert.title}
+                  </h4>
+                  <p className={`text-sm mt-1 transition-colors ${
+                    isDark ? 'text-gray-300' : 'text-gray-600'
+                  }`}>
+                    {alert.message}
+                  </p>
                 </div>
-                <span className="text-xs text-gray-500">{alert.time}</span>
+                <span className={`text-xs transition-colors ${
+                  isDark ? 'text-gray-500' : 'text-gray-500'
+                }`}>
+                  {alert.time}
+                </span>
               </div>
             </div>
           ))}

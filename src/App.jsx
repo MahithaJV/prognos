@@ -1,5 +1,6 @@
 // App.jsx
 import React, { useState } from 'react';
+import { ThemeProvider } from './context/Themecontext'; // Fixed import
 import Navbar from './components/Navbar';
 import Dashboard from './pages/Dashboard';
 import Forecast from './pages/Forecast';
@@ -9,7 +10,12 @@ import AlertModal from './components/AlertModal';
 
 function App() {
   const [currentPage, setCurrentPage] = useState('dashboard');
-  const [showAlert, setShowAlert] = useState(true); // Simulate surge alert
+  const [alertModal, setAlertModal] = useState({
+    isOpen: true,
+    title: 'High AQI Alert',
+    message: 'Air Quality Index has reached unhealthy levels (156). Respiratory patient surge expected in 48 hours.',
+    severity: 'high'
+  });
 
   const renderPage = () => {
     switch (currentPage) {
@@ -27,32 +33,21 @@ function App() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-cyan-100">
-      <Navbar currentPage={currentPage} setCurrentPage={setCurrentPage} />
-      
-      {/* Alert Modal - Simulating surge detection */}
-      {showAlert && (
-        <AlertModal 
-          isOpen={showAlert} 
-          onClose={() => setShowAlert(false)}
-          title="🚨 Surge Alert Detected"
-          message="High AQI levels detected. Respiratory patient surge expected in 48 hours. AI Playbook has been generated."
-          severity="high"
+    <ThemeProvider>
+      <div className="min-h-screen transition-colors duration-300 bg-gray-50 dark:bg-gray-900">
+        <Navbar currentPage={currentPage} setCurrentPage={setCurrentPage} />
+        <main className="container mx-auto px-4 py-6">
+          {renderPage()}
+        </main>
+        <AlertModal
+          isOpen={alertModal.isOpen}
+          onClose={() => setAlertModal(prev => ({ ...prev, isOpen: false }))}
+          title={alertModal.title}
+          message={alertModal.message}
+          severity={alertModal.severity}
         />
-      )}
-      
-     <main className="container mx-auto px-4 py-8">
-  {(() => {
-    try {
-      return renderPage();
-    } catch (e) {
-      console.error(e);
-      return <div className="text-red-600 text-xl">Error: {e.message}</div>;
-    }
-  })()}
-</main>
-
-    </div>
+      </div>
+    </ThemeProvider>
   );
 }
 

@@ -1,4 +1,4 @@
-// components/AlertModal.jsx
+
 import React from 'react';
 
 const AlertModal = ({ isOpen, onClose, title, message, severity }) => {
